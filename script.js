@@ -1,7 +1,48 @@
-function getRecommendations(BMI, PD, AGE) {
+// Define a global variable to store calculated BMI
+let calculatedBMI = 0;
+
+document.getElementById('calculate-result').addEventListener('click', () => {
+    const heightInput = document.getElementById('height');
+    const weightInput = document.getElementById('weight');
+    const BMIResult = document.getElementById('bmi-result');
+    const recommendationsDiv = document.getElementById('recommendations');
+
+    const height = parseFloat(heightInput.value);
+    const weight = parseFloat(weightInput.value);
+
+    if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+        BMIResult.textContent = "โปรดป้อนส่วนสูงและน้ำหนักที่ถูกต้อง";
+        recommendationsDiv.innerHTML = '';
+    } else {
+        // Calculate BMI and store it in the global variable
+        const h1 = height / 100; // Convert height from cm to meters
+        calculatedBMI = weight / (h1 * h1);
+        BMIResult.textContent = `ค่า BMI ของคุณคือ: ${calculatedBMI.toFixed(2)}`;
+
+        // Call the function to get recommendations
+        const PD = document.getElementById('disease').value;
+        const AGE = parseInt(document.getElementById('age').value);
+        const recommendations = getRecommendations(PD, AGE);
+
+        recommendationsDiv.innerHTML = '';
+
+        if (recommendations.length > 0) {
+            recommendationsDiv.innerHTML = "<strong>กิจกรรมที่แนะนำ:</strong><br>";
+            recommendations.forEach((activity, idx) => {
+                recommendationsDiv.innerHTML += `${idx + 1}. ${activity}<br>`;
+            });
+        } else {
+            recommendationsDiv.innerHTML = "ไม่มีคำแนะนำ";
+        }
+    }
+});
+
+// Define the getRecommendations function as shown in the previous response
+
+function getRecommendations(PD, AGE) {
     let recommendedActivities = [];
 
-    if (BMI < 18.5) {
+    if (calculatedBMI < 18.5) {
         if (PD === "โรคหัวใจ") {
             if (AGE >= 60 && AGE <= 65) {
                 recommendedActivities.push("อ่านหนังสือ", "รดน้ำต้นไม้", "วาดรูป");
@@ -15,7 +56,7 @@ function getRecommendations(BMI, PD, AGE) {
                 recommendedActivities.push("เต้น cover", "เต้นลีลาศ");
             }
         }
-    } else if (BMI >= 18.5 && BMI < 24.9) {
+    } else if (calculatedBMI >= 18.5 && calculatedBMI < 24.9) {
         if (PD === "โรคหัวใจ") {
             if (AGE >= 60 && AGE <= 65) {
                 recommendedActivities.push("โยคะ", "รดน้ำต้นไม");
@@ -41,7 +82,7 @@ function getRecommendations(BMI, PD, AGE) {
                 recommendedActivities.push("โยคะ", "ทำสวน");
             }
         }
-    } else if (BMI >= 24.9 && BMI < 29.9) {
+    } else if (calculatedBMI >= 24.9 && calculatedBMI < 29.9) {
         if (PD === "โรคหัวใจ") {
             if (AGE >= 60 && AGE <= 65) {
                 recommendedActivities.push("ว่ายน้ำ", "รำมวยไทยเก็ก", "Art");
@@ -55,7 +96,7 @@ function getRecommendations(BMI, PD, AGE) {
                 recommendedActivities.push("โยคะ", "รำมวยไทยเก็ก");
             }
         }
-    } else if (BMI >= 30) {
+    } else if (calculatedBMI >= 30) {
         if (PD === "โรคหัวใจ") {
             if (AGE >= 60 && AGE <= 65) {
                 recommendedActivities.push("ว่ายน้ำ", "โยคะ", "แอโรบิคทางน้ำ");
@@ -74,20 +115,3 @@ function getRecommendations(BMI, PD, AGE) {
     return recommendedActivities;
 }
 
-document.getElementById('get-recommendations').addEventListener('click', () => {
-    const BMI = parseFloat(document.getElementById('bmi').value);
-    const PD = document.getElementById('disease').value;
-    const AGE = parseInt(document.getElementById('age').value);
-
-    const recommendations = getRecommendations(BMI, PD, AGE);
-    const recommendationsDiv = document.getElementById('recommendations');
-    recommendationsDiv.innerHTML = '';
-
-    if (recommendations.length > 0) {
-        recommendations.forEach((activity, idx) => {
-            recommendationsDiv.innerHTML += `${idx + 1}. ${activity}<br>`;
-        });
-    } else {
-        recommendationsDiv.innerHTML = "ไม่มีคำแนะนำ";
-    }
-});
