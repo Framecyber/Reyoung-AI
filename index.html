@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ระบบแนะนำกิจกรรมรียัง</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบแนะนำกิจกรรมรียัง</h1>
+        <form id="recommendation-form">
+            <label for="bmi">ค่า BMI:</label>
+            <input type="text" id="bmi">
+            <label for="disease">โรคประจำตัว:</label>
+            <input type="text" id="disease">
+            <label for="age">อายุ:</label>
+            <input type="text" id="age">
+            <button type="button" id="get-recommendations">แนะนำ</button>
+        </form>
+        <div id="recommendations"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
